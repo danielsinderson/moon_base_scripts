@@ -12,11 +12,26 @@ Generated prompts are based on the exercise outlined in "The Triggering Town" by
 import random
 
 
+nouns =  ["dog", "tree", "car", "book", "chair", "table", "house", "phone", "ball", "cup", "cat", "bike", "bed", "shoe", "hat", "sun", "moon", "key", "door", "window", "river", "mountain", "ocean", "cloud", "bird", "fish", "flower", "bridge", "road", "computer", "pen", "pencil", "wallet", "clock", "mirror", "guitar", "umbrella", "brush", "toothbrush", "lamp", "lampshade", "candle", "mirror", "painting", "camera", "microphone", "wallet", "hat", "umbrella", "sunglasses", "globe", "glasses", "bookshelf", "vase", "chair", "pillow", "blanket", "coffeemaker", "couch", "scarf", "camera", "passport", "dictionary", "newspaper", "notebook", "bottle", "plate", "fork", "spoon", "knife", "napkin", "tablecloth", "watch", "bracelet", "necklace", "ring", "earrings", "puzzle", "painting", "sketch", "sculpture", "laptop", "desktop", "tablet", "mouse", "keyboard", "monitor", "galaxy", "nebula", "quasar", "supernova", "comet", "asteroid", "planet", "constellation", "telescope", "observatory", "eclipse", "parallax", "orbit", "cosmos", "molecule", "cell", "genome", "species", "ecosystem", "biodiversity", "ecology", "mutation", "chlorophyll", "mitosis", "meiosis", "enzymes", "chloroplast", "artifact", "excavation", "ancestor", "ritual", "kinship", "mythology", "ethnography", "nomad", "agriculture", "settlement", "burial", "shaman", "hypothesis", "fossil", "radiocarbon", "ceramics", "hominid", "evolution", "ethnology", "kinship", "human", "archaeology", "excavation", "heritage", "primate", "mitochondria", "language", "gene", "behavior", "nature", "culture", "adaptation", "astronomy", "taxonomy", "chimpanzee", "migration", "monolith", "pottery", "language", "homology", "stratigraphy"]
+adjectives = ['happy', 'red', 'big', 'shiny', 'tall', 'brave', 'kind', 'loud', 'soft', 'sweet', 'angry', 'sunny', 'calm', 'funny', 'smart', 'quick', 'thick', 'thin', 'rich', 'poor', 'warm', 'cold', 'busy', 'lazy', 'proud', 'quiet', 'dark', 'bright', 'light', 'heavy', 'young', 'old', 'fast', 'slow', 'fresh', 'stale', 'tiny', 'huge', 'bitter', 'sour', 'spicy', 'mild', 'smooth', 'rough', 'fierce', 'gentle', 'famous', 'ordinary', 'unique', 'elegant', 'clumsy', 'curious', 'serious', 'playful', 'crazy', 'silly', 'wild', 'mellow', 'dull', 'vivid', 'daring', 'timid', 'cheerful', 'gloomy', 'peaceful', 'vibrant', 'dazzling', 'mysterious', 'transparent', 'fragile', 'robust', 'glorious', 'graceful', 'harmonious', 'lively', 'precious', 'rigorous', 'spontaneous', 'tranquil', 'versatile', 'zesty', 'adorable', 'bouncy', 'charming', 'delightful', 'exuberant', 'fascinating', 'genuine', 'inspiring', 'jovial', 'kooky', 'lovable', 'melodic', 'nostalgic', 'optimistic', 'pensive', 'quirky', 'radiant', 'sincere', 'tender']
+verbs = ['run', 'eat', 'jump', 'sleep', 'swim', 'write', 'read', 'sing', 'dance', 'play', 'work', 'study', 'drive', 'talk', 'listen', 'watch', 'climb', 'paint', 'cook', 'draw', 'fly', 'skip', 'laugh', 'cry', 'smile', 'think', 'bake', 'code', 'surf', 'hike', 'ride', 'travel', 'explore', 'photograph', 'meditate', 'design', 'compute', 'calculate', 'build', 'invent', 'compose', 'assemble', 'balance', 'equip', 'hammer', 'navigate', 'operate', 'paddle', 'plant', 'race', 'repair', 'sculpt', 'spin', 'train', 'unite', 'vary', 'weave', 'zoom', 'adapt', 'broadcast', 'capture', 'deliver', 'endure', 'foster', 'gather', 'hatch', 'illuminate', 'jog', 'knead', 'leap', 'mold', 'navigate', 'observe', 'perform', 'quicken', 'radiate', 'sprint', 'transform', 'understand', 'vacuum', 'wander', 'x-ray', 'yield', 'zap']
+
+
+def fill_word_list(words: list, count: int):
+    word_list = []
+    for i in range(count):
+        word = random.choice(words)
+        while word in word_list:
+            word = random.choice(words)
+        word_list.append(word)
+    return word_list
+
+
 def generate_word_lists() -> dict:
     word_lists = {
-        "nouns": [],
-        "adjectives": [],
-        "verbs": []
+        "nouns": fill_word_list(nouns, 10),
+        "adjectives": fill_word_list(adjectives, 10),
+        "verbs": fill_word_list(verbs, 10)
     }
     return word_lists
 
