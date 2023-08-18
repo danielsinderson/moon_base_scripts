@@ -18,7 +18,17 @@ def generate_word_lists() -> dict:
 
 
 def generate_structure() -> dict:
-    structure = {}
+    lines_per_stanza = random.randint(2, 10)
+    stanzas = random.randint(1, 10)
+    
+    while lines_per_stanza * stanzas > 30:
+        lines_per_stanza = random.randint(2, 10)
+        stanzas = random.randint(1, 10)
+    
+    structure = {
+        "lines": lines_per_stanza,
+        "stanzas": stanzas
+    }
     return structure
 
 
