@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "scripts"
+version = "0.1.0"
+description = "helper scripts for Moon Base"
+authors = ["Daniel Sinderson <drsinderson@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+CairoSVG = "^2.7.1"
+spacy = "^3.6.1"
+tracery = "^0.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
