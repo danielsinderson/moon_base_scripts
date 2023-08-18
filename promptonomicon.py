@@ -103,7 +103,7 @@ def format_prompt(word_lists: dict,
     2. There must be {structure['lines_per_stanza']} lines per stanza.\n
     3. It must have {sonic_constraint}\n
     4. It must contain {end_stop_constraint}\n
-    5. It must choose a noun, an adjective, and a verb from the following lists for every stanza\n
+    5. It must contain a noun, an adjective, and a verb from the following lists for every stanza\n
     \n
     Nouns: {word_lists["nouns"]}\n
     Adjectives: {word_lists["adjectives"]}\n
