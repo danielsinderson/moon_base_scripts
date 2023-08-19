@@ -35,7 +35,7 @@ def love_as_intransitive(text: str) -> str:
             continue
         num_used += 1
         passed = False
-        where_used.append(f"SENTENCE {index}: " + sentence.replace("\n\n", " // ").replace("\n", " / "))
+        where_used.append(f"SENTENCE {index + 1}: " + sentence.replace("\n\n", " // ").replace("\n", " / "))
     
     if passed:
         result = "The Love as Intransitive Verb Test passed!"
@@ -56,10 +56,39 @@ def sentence_endings(text: str) -> str:
 
 
 def avoid_to_be(text: str) -> str:
-    num_used: int
-    where_used: list
+    num_used: int = 0
+    where_used: list = []
     
-    result = (num_used, where_used)
+    words_to_avoid = [
+        "am",
+        "was",
+        "are",
+        "is",
+        "were"
+    ]
+    
+    # clean up the contractions
+    text = text.replace("e's", "e is").replace("t's", "t is")
+    text = text.replace("n't", " not").replace("'m", " am").replace("'re", " are")
+    
+    # split into lines then into words and loop over them
+    lines = text.split("\n")
+    for index, line in enumerate(lines):
+        words = line.split(" ")
+        for word in words:
+            # check to see if those words are in our words_to_avoid list
+            if word in words_to_avoid:
+                num_used += 1
+                where_used.append(f"LINE {index + 1}: " + line)
+    
+    result = ""
+    passed: bool = (num_used <= int(len(lines) / 3))
+    if passed:
+        result = f"The Verb to Be Test passed! You used it only {num_used} times across {len(lines)} lines."
+    else: 
+        result = f"The Verb to Be Test failed. You used it {num_used} times across {len(lines)} lines. Consider the following lines to see if it could be removed or replaced:\n- " + "\n- ".join(where_used)
+    
+    #print(result)
     return result
 
 
@@ -90,7 +119,7 @@ def avoid_clarifying_words(text: str) -> str:
 def test_text(text: str) -> str:
     test1: str = love_as_intransitive(text)
     #test2: str = sentence_endings(text)
-    #test3: str = avoid_to_be(text)
+    test3: str = avoid_to_be(text)
     #test4: str = max_sentence_length(text)
     #test5: str = sentence_variability(text)
     #test6: str = avoid_clarifying_words(text)
@@ -99,7 +128,7 @@ def test_text(text: str) -> str:
 
 
 def main():
-    test_text("This is for testing\npurposes. Don't look too hard\nat the things it says.\n\nIt can't hurt you. It can't\neven say its own name\nyet. I love you. But love \n is not enough.")
+    test_text("This is a test. Don't\nlook too hard\nat the things it says.\n\nIt can't hurt you. It can't\neven say its own name\nyet. I love you. But love \n is not\n\neverything. I was\na bird before this. I was\ndead there.")
 
 
 if __name__ == "__main__":
