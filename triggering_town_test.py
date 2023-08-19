@@ -109,10 +109,41 @@ def sentence_variability(text: str) -> str:
 
 
 def avoid_clarifying_words(text: str) -> str:
-    num_used: int
-    where_used: list[str]
+    passed: bool = True
+    num_used: int = 0
+    where_used: list = []
     
-    result = (num_used, where_used)
+    words_to_avoid = [
+        "while",
+        "meanwhile",
+        "as",
+        "during",
+        "so",
+        "because",
+        "thus",
+        "causing",
+        "yet",
+        "but"
+    ]
+    
+    # split into lines then into words and loop over them
+    lines = text.split("\n")
+    for index, line in enumerate(lines):
+        words = line.split(" ")
+        for word in words:
+            # check to see if those words are in our words_to_avoid list
+            if word in words_to_avoid:
+                num_used += 1
+                where_used.append(f"LINE {index + 1}: " + line)
+                passed = False
+    
+    result = ""
+    if passed:
+        result = f"The Clarifying Words Test passed! You didn't use any of them."
+    else: 
+        result = f"The Clarifying Words Test failed. You used them {num_used} times across {len(lines)} lines. Consider the following lines to see if they could be removed or replaced:\n- " + "\n- ".join(where_used)
+    
+    print(result)
     return result
 
 
@@ -122,7 +153,7 @@ def test_text(text: str) -> str:
     test3: str = avoid_to_be(text)
     #test4: str = max_sentence_length(text)
     #test5: str = sentence_variability(text)
-    #test6: str = avoid_clarifying_words(text)
+    test6: str = avoid_clarifying_words(text)
 
     
 
