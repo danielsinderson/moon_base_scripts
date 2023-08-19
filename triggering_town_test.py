@@ -93,10 +93,26 @@ def avoid_to_be(text: str) -> str:
 
 
 def max_sentence_length(text: str) -> str:
-    passed: bool
-    actual_max: int
+    passed: bool = True
+    actual_max: int = 0
+    problem_sentences = []
     
-    result = (passed, actual_max)
+    sentences = re.split(r"[\.\?\!]", text)
+    for index, sentence in enumerate(sentences):
+        sentence_length = len(re.split(r"\s", sentence))
+        if sentence_length > actual_max:
+            actual_max = sentence_length
+        if sentence_length > 17:
+            passed = False
+            problem_sentences.append(f"SENTENCE {index}:" + sentence)
+    
+    result = ""
+    if passed:
+        result = f"The Max Sentence Length Test passed! Your longest sentence was {actual_max} words long."
+    else:
+        result = f"The Max Sentence Length Test failed. Your longest sentence was {actual_max} words long. Consider shortening and splitting up the following sentences:\n- " + "\n- ".join(problem_sentences)
+        
+    # print(result)
     return result
 
 
@@ -143,7 +159,7 @@ def avoid_clarifying_words(text: str) -> str:
     else: 
         result = f"The Clarifying Words Test failed. You used them {num_used} times across {len(lines)} lines. Consider the following lines to see if they could be removed or replaced:\n- " + "\n- ".join(where_used)
     
-    print(result)
+    # print(result)
     return result
 
 
@@ -151,7 +167,7 @@ def test_text(text: str) -> str:
     test1: str = love_as_intransitive(text)
     #test2: str = sentence_endings(text)
     test3: str = avoid_to_be(text)
-    #test4: str = max_sentence_length(text)
+    test4: str = max_sentence_length(text)
     #test5: str = sentence_variability(text)
     test6: str = avoid_clarifying_words(text)
 
