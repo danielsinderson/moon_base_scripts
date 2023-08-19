@@ -46,12 +46,65 @@ def love_as_intransitive(text: str) -> str:
     return result
 
 
-def sentence_endings(text: str) -> str:
-    passed: bool
-    ratio: float
-    endings: list[str]
+def single_syllable(word: str) -> bool:
+    result: bool = True
+    total: int = 0
     
-    result = (passed, ratio, endings)
+    # find all vowels
+    vowels = len(re.findall(r"[?aeiou]", word))
+    total += vowels
+    
+    # add end y and y+consonant+e combos
+    y_stuff = len(re.findall(r"y$", word)) + len(re.findall(r"y[r][eo]$", word))
+    total += y_stuff
+    
+    # subtract out common double vowel combinations
+    double_vowels = len(re.findall(r"(?:ae|ai|au|ea|ee|ei|eu|ie|iu|oe|oi|oo|ou|ue|ui)", word))
+    total -= double_vowels
+    
+    # subtract out common vowel+consonant+vowel combinations
+    vcv_combos = len(re.findall(r"(?:[aeiouy][bdklmnprstvz]e$)", word))
+    total -= vcv_combos
+    
+    # subtract out common 3 and 4 vowel combos
+    triple_vowels = len(re.findall(r"(?:eau|ieu|ueue)", word))
+    total -= triple_vowels
+    
+    # print(word, total)
+    
+    result = (total == 1)
+    return result
+
+
+def sentence_endings(text: str) -> str:
+    yes: int = 0
+    no: int = 0
+    endings: list = []
+    
+    sentences = re.split(r"[\.\?\!]", text)
+    for sentence in sentences:
+        tokens = re.split(r"\s", sentence)
+        words = [token for token in tokens if token != ""]
+        if words == []:
+            continue
+        endings.append(words[-1])
+        
+    for index, ending in enumerate(endings):
+        if single_syllable(ending):
+            yes += 1
+        else:
+            no += 1
+    
+    ratio: float = yes / (yes + no)
+    passed = (ratio >= 0.5)
+    
+    result = ""
+    if passed:
+        result = f"The Single Syllable Sentence Ending test passed! Your ratio of single syllable sentence endings is {round(ratio, 3)}."
+    else:
+        result = f"The Single Syllable Sentence Ending test failed. Your ratio of single syllable sentence endings is {round(ratio, 3)}. Try ending more of your sentences with punchier words."
+        
+    # print(result)
     return result
 
 
@@ -174,7 +227,7 @@ def avoid_clarifying_words(text: str) -> str:
     # split into lines then into words and loop over them
     lines = text.split("\n")
     for index, line in enumerate(lines):
-        words = line.split(" ")
+        words = line.replace(".", "").split(" ")
         for word in words:
             # check to see if those words are in our words_to_avoid list
             if word in words_to_avoid:
@@ -194,18 +247,21 @@ def avoid_clarifying_words(text: str) -> str:
 
 def test_text(text: str) -> str:
     test1: str = love_as_intransitive(text)
-    #test2: str = sentence_endings(text)
+    test2: str = sentence_endings(text)
     test3: str = avoid_to_be(text)
     test4: str = max_sentence_length(text)
     test5: str = sentence_variability(text)
     test6: str = avoid_clarifying_words(text)
+    
+    return f"1. {test1}\n2. {test2}\n3. {test3}\n4. {test4}\n5. {test5}\n6. {test6}\n"
 
     
 
 
 def main():
-    test_text("This is a test. Don't\nlook too hard\nat the things it says.\n\nIt can't hurt you. It can't\neven say its own name\nyet. I love you. But love \n is not\n\neverything. I was\na bird before this. I was\ndead there.")
-
+    result = test_text("This is a test. Don't\nlook too hard\nat the things it says.\n\nIt can't hurt you. It can't\neven say its own name\nyet. I love you. But love \n is not\n\neverything. I was\na bird before this. I was\ndead there.")
+    print(result)
+    #test_text("eke. out. beautiful. guile. pyro. pyre. furious. bile. ouch. scary. queue. lieu.")
 
 if __name__ == "__main__":
     main()
