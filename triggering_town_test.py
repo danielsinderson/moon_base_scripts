@@ -14,23 +14,39 @@ tests:
 4) Max sentence length 17 words
 5) Each sentence should be four, or more, words longer or shorter than the sentence prior 
 6) Avoid clarifying words [while, meanwhile, during, so, because, thus, causing, yet, but]
-7) Keep your subject close to the front of the sentence
-8) Use more concrete nouns than abstract ones
 """
 
-import spacy
+import re
 
 
-def love_as_intransitive(text: str) -> tuple[bool, int, list]:
-    passed: bool
-    num_used: int
-    where_used: list[str]
+def love_as_intransitive(text: str) -> str:
+    passed: bool = True
+    num_used: int = 0
+    where_used: list = []
+    result: str = ""
     
-    result = (passed, num_used, where_used)
+    sentences = re.split(r"[\.\?\!]", text)
+    love_pattern = r"(?:i|you|he|she|they|we|it)\slove\s(?:me|you|him|her|them|us|it)"
+    
+    for index, sentence in enumerate(sentences):
+        transitive_loves = len(re.findall(love_pattern, sentence.lower()))
+        total_loves = len(re.findall(r"love", sentence))
+        if transitive_loves == total_loves:
+            continue
+        num_used += 1
+        passed = False
+        where_used.append(f"SENTENCE {index}: " + sentence.replace("\n\n", " // ").replace("\n", " / "))
+    
+    if passed:
+        result = "The Love as Intransitive Verb Test passed!"
+    else:
+        result = f"The Love as Intransitive Verb Test failed {num_used} {'time' if num_used == 1 else 'times'}. Double check that each of the following usages are truly necessary:\n- " + "\n- ".join(where_used)
+    
+    #print(result)
     return result
 
 
-def sentence_endings(text: str) -> tuple[bool, float, list]:
+def sentence_endings(text: str) -> str:
     passed: bool
     ratio: float
     endings: list[str]
@@ -39,7 +55,7 @@ def sentence_endings(text: str) -> tuple[bool, float, list]:
     return result
 
 
-def avoid_to_be(text: str) -> tuple[int, list]:
+def avoid_to_be(text: str) -> str:
     num_used: int
     where_used: list
     
@@ -47,7 +63,7 @@ def avoid_to_be(text: str) -> tuple[int, list]:
     return result
 
 
-def max_sentence_length(text: str) -> tuple[bool, int]:
+def max_sentence_length(text: str) -> str:
     passed: bool
     actual_max: int
     
@@ -55,7 +71,7 @@ def max_sentence_length(text: str) -> tuple[bool, int]:
     return result
 
 
-def sentence_variability(text: str) -> tuple[bool, list]:
+def sentence_variability(text: str) -> str:
     passed: bool
     where_failed: list[str]
     
@@ -63,7 +79,7 @@ def sentence_variability(text: str) -> tuple[bool, list]:
     return result
 
 
-def avoid_clarifying_words(text: str) -> tuple[int, list]:
+def avoid_clarifying_words(text: str) -> str:
     num_used: int
     where_used: list[str]
     
@@ -71,24 +87,19 @@ def avoid_clarifying_words(text: str) -> tuple[int, list]:
     return result
 
 
-def subject_near_beginning(text: str) -> tuple[float, list]:
-    ratio: float
-    where_failed: list[str]
-    
-    result = (ratio, where_failed)
-    return result
+def test_text(text: str) -> str:
+    test1: str = love_as_intransitive(text)
+    #test2: str = sentence_endings(text)
+    #test3: str = avoid_to_be(text)
+    #test4: str = max_sentence_length(text)
+    #test5: str = sentence_variability(text)
+    #test6: str = avoid_clarifying_words(text)
 
-
-def abstract_nouns(text: str) -> tuple[float, list]:
-    ratio: float
-    where_used: list[str]
     
-    result = (ratio, where_used)
-    return result
 
 
 def main():
-    pass
+    test_text("This is for testing\npurposes. Don't look too hard\nat the things it says.\n\nIt can't hurt you. It can't\neven say its own name\nyet. I love you. But love \n is not enough.")
 
 
 if __name__ == "__main__":
