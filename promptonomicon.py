@@ -80,7 +80,7 @@ def generate_quirk() -> str:
         "must follow a consistent meter.",
         "must be an acrostic.",
         "must use only two kinds of punctuation max.",
-        "must not use one of the vowels.",
+        "must not use a vowel of your choice.",
         "must only use 10 consonants.",
         "must use every consonant at least once.",
         "must have a consistent syllable count for every line."
