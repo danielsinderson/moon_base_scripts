@@ -117,10 +117,39 @@ def max_sentence_length(text: str) -> str:
 
 
 def sentence_variability(text: str) -> str:
-    passed: bool
-    where_failed: list[str]
+    passed: bool = True
+    where_failed: list = []
+    previous_length: int = 0
+    previous_sentence: str = ""
     
-    result = (passed, where_failed)
+    flattened_text = text.replace("\n", " ")
+    sentences = re.split(r"[\.\?\!]", flattened_text)
+    for index, sentence in enumerate(sentences):
+        tokens = re.split(r"\s", sentence)
+        words = [token for token in tokens if token != ""]
+        length = len(words)
+        
+        if index == 0:
+            previous_length = length
+            previous_sentence = sentence
+            continue
+        
+        low_bound = previous_length * 2/3
+        up_bound = previous_length * 3/2
+        if low_bound <= length <= up_bound:
+            passed = False
+            where_failed.append(f"SENTENCES {index-1} and {index}: {previous_sentence}. {sentence}.")
+        
+        previous_sentence = sentence
+        previous_length = length
+
+    result = ""
+    if passed:
+        result = f"The Sentence Variability Test passed!"
+    else:
+        result = f"The Sentence Variability Test failed. Look at the following locations to see if you can alter the sentence structure a bit more:\n- " + "\n- ".join(where_failed)
+    
+    # print(result)
     return result
 
 
@@ -168,7 +197,7 @@ def test_text(text: str) -> str:
     #test2: str = sentence_endings(text)
     test3: str = avoid_to_be(text)
     test4: str = max_sentence_length(text)
-    #test5: str = sentence_variability(text)
+    test5: str = sentence_variability(text)
     test6: str = avoid_clarifying_words(text)
 
     
