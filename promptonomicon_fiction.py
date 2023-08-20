@@ -4,6 +4,9 @@ A script for generating flash fiction prompts from tracery grammars
 
 import tracery, random
 
+grammars: dict  ={
+
+}
 
 def generate_setting() -> str:
     result: str = ""
@@ -16,7 +19,23 @@ def generate_story() -> str:
 
 
 def generate_constraints() -> list:
-    result: str = ""
+    selector: bool = random.choice([True, False])
+    perspective = "First-Person" if selector else "Second-Person"
+    
+    quirks = [
+        "Use every letter in the alphabet at least once",
+        "Completely avoid a vowel of your choice",
+        "Don't use any commas",
+        "Write the entire piece as one sentence",
+        "Write the entire piece as a dialogue",
+        "Weave in something from the first random [Wikipedia](https://en.wikipedia.org/wiki/Special:Random) article you see",
+        "Include at least three made up slang words",
+    ]
+    quirk = random.choice(quirks)
+    
+    word_limit = f"{random.randint(1, 10) * 250} words"
+    
+    result = [perspective, quirk, word_limit]
     return result
 
 
