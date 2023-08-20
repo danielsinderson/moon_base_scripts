@@ -10,20 +10,22 @@ rules = {
     "story": [
         "#subject.a# #transitive_verb#",
     ],
-    "subject": ["#person#", "#occupation#"],
-    "person": ["teenager", "kid", "boy", "girl", "man", "woman", "old man", "old woman"],
+    "subject": ["#person#", "#occupation#", "#person#", "#occupation#", "#person#", "#occupation#", "group of #people#", "group of #occupation.s#"],
+    "person": ["teenager", "kid", "boy", "girl", "#age# man", "#age# woman"],
+    "age": ["young", "old", "middle-aged"],
     "occupation": ["doctor", "scientist", "peasant", "laborer", "midwife", "immigrant", "refugee", "activist", "farmer", "nurse", "witch", "fairy", "mercenary", "robot", "alien", "mechanic", "grocery store clerk", "politician", "bureaucrat", "soldier", "prostitute", "priest", "shaman", "boxer", "smuggler", "trader", "drug dealer", "thief", "art dealer", "archaeologist", "accountant", "gang boss", "janitor", "potter", "engineer", "clerk", "servant", "poet", "artist", "musician"],
-    "transitive_verb": [ "eats #object.a#", "makes #object.a#", "draws the shortest straw", "drives through #location.a# as #tragedy.a#", "drives #subject.a# insane", "plays with #object.a#", "plays with #subject.a#", "gambles and loses", "gambles and wins", "watches #subject.a#", "watches #tragedy.a#", "cooks #object.a#", "catches #subject.a#", "pushes #subject.a# down", "pushes #object.a# up a hill", "carries #subject.a# to #location.a#", "sends #subject.a# #object.a#", "receives #object.a# from #subject.a#", "cleans #location.a#", "cleans #subject.a#", "breaks #object.a#", "fixes #object.a#", "finds #subject.a# in #location.a#", "collects #object.s# and hides them in #location.a#", "destroys #subject.a#", "buys #object.a#", "sells #object.a#", "creates #object.a#", "visits #subject.a# in #location.a#", "invites #subject.a# to #location.a#"],
+    "people": ["teenagers", "kids", "boys", "girls", "men", "women", "old men", "old women"],
+    "transitive_verb": [ "eats #object.a#", "makes #object.a#", "draws the shortest straw", "drives through #location.a# and #tragedy.a#", "drives #subject.a# insane", "plays with #object.a#", "plays with #subject.a#", "gambles and loses", "gambles and wins", "watches #subject.a#", "watches #tragedy.a#", "cooks #object.a#", "catches #subject.a#", "pushes #subject.a# down", "pushes #object.a# up a hill", "carries #subject.a# to #location.a#", "sends #subject.a# #object.a#", "receives #object.a# from #subject.a#", "cleans #location.a#", "cleans #subject.a#", "breaks #object.a#", "fixes #object.a#", "finds #subject.a# in #location.a#", "collects #object.s# and hides them in #location.a#", "destroys #subject.a#", "buys #object.a#", "sells #object.a#", "hunts for #object.a#", "kills #subject.a#", "argues with #object.a#", "visits #subject.a# in #location.a#", "invites #subject.a# to #location.a#"],
     "object": ["#subject#", "#thing#"],
     "thing":  ["apple", "crystal ball", "cat", "dog", "flower", "guitar", "hat", "jacket", "kite", "lemon", "notebook", "quilt", "sun", "umbrella", "violin", "watermelon", "xylophone", "butterfly", "car", "eagle", "globe", "jellyfish", "moon", "pile of #object.s#", "octopus", "piano", "queen", "robot", "sailboat", "tiger", "unicorn", "vase", "whale", "ant colony", "banana", "bottle", "egg", "honeycomb", "ice block", "jigsaw puzzle", "nail", "pepper", "rose", "sandcastle", "tulip", "violet", "arrow", "book", "chair", "eggplant", "flag", "grape", "hammer", "jackal", "mango", "sunflower"],
     "location": ["beach", "mountain", "forest", "river", "cave", "desert", "ocean", "island", "valley", "countryside", "village", "canyon", "jungle", "lake", "meadow", "volcano", "waterfall", "plateau", "wetland", "glacier", "marsh", "oasis", "prairie", "rainforest", "savanna", "tundra", "estuary", "gulch", "#noun#"],
-    "tragedy": ["town burns", "bomb drops", "army descends", "flood rises", "city sinks", "comet falls"]
+    "tragedy": ["town burn", "bomb drop", "army descend", "flood rise", "city sink", "comet fall"]
 }
 
 
 def generate_constraints() -> list:
-    selector: bool = random.choice([True, False])
-    perspective = "first-person" if selector else "third-person"
+    perspectives = ["first", "third", "third"]
+    perspective = random.choice(perspectives) + "-person"
     
     quirks = [
         "use every letter in the alphabet at least once",
@@ -31,7 +33,7 @@ def generate_constraints() -> list:
         "don't use any commas",
         "write the entire piece as one sentence",
         "write the entire piece as a dialogue",
-        "weave in something from the first random [Wikipedia](https://en.wikipedia.org/wiki/Special:Random) article you see",
+        "weave in something from the first random Wikipedia article you see",
         "include at least three made up slang words",
     ]
     quirk = random.choice(quirks)
@@ -42,7 +44,7 @@ def generate_constraints() -> list:
     return result
 
 
-def generate_prompt() -> str:
+def generate_fiction_prompt() -> str:
     grammar = tracery.Grammar(rules)
     grammar.add_modifiers(base_english)
     
@@ -54,16 +56,18 @@ def generate_prompt() -> str:
     word_limit: str = constraints[2]
     
     result: str = f"""
-    STORY: {story}\n
-    PERSPECTIVE: {perspective}\n
-    OPTIONAL QUIRK: {quirk}\n
-    WORD LIMIT: {word_limit}\n
+    STORY: {story}
+    PERSPECTIVE: {perspective}
+    WORD LIMIT: {word_limit}
+    OPTIONAL CHALLENGE: {quirk}
+    
+    Good luck!
     """
     return result
 
 
 def main():
-    prompt: str = generate_prompt()
+    prompt: str = generate_fiction_prompt()
     print(prompt)
 
 
