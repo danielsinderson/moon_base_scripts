@@ -117,7 +117,7 @@ def format_prompt(word_lists: dict,
     return formatted_prompt
 
 
-def generate_prompt() -> str:
+def generate_poetry_exercise() -> str:
     word_lists: dict = generate_word_lists()
     structure: dict = generate_structure()
     sonic_constraint: str = generate_sonic_constraint()
@@ -134,7 +134,7 @@ def generate_prompt() -> str:
 
 
 def main():
-    prompt: str = generate_prompt()
+    prompt: str = generate_poetry_exercise()
     print(prompt)
 
 
