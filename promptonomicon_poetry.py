@@ -69,7 +69,7 @@ def generate_sonic_constraint() -> str:
 
 
 def generate_end_stop_constraint(structure: dict) -> str:
-    max_end_stops = random.randint(2, int(structure["total_lines"] / 2))
+    max_end_stops = random.randint(2, int(structure["total_lines"] / 2) + 1)
     end_stop_constraint = f"no more than {max_end_stops} end stops."
     return end_stop_constraint
 
@@ -85,9 +85,7 @@ def generate_quirk() -> str:
         "must use every consonant at least once.",
         "must have a consistent syllable count for every line."
     ]
-    quirk = ""
-    if random.randint(0, 1):
-        quirk = random.choice(quirks)
+    quirk = random.choice(quirks)
     return quirk
 
 
@@ -98,22 +96,18 @@ def format_prompt(word_lists: dict,
                   quirk: str
                   ) -> str:
     formatted_prompt = f"""
-    Your poem must adhere to the following constraints:\n
-    1. It must contain {structure['stanzas']} stanzas.\n
-    2. There must be {structure['lines_per_stanza']} lines per stanza.\n
-    3. It must have {sonic_constraint}\n
-    4. It must contain {end_stop_constraint}\n
-    5. It must contain a noun, an adjective, and a verb from the following lists for every stanza\n
-    \n
-    Nouns: {word_lists["nouns"]}\n
-    Adjectives: {word_lists["adjectives"]}\n
+    Your poem must adhere to the following constraints:
+    1. It must contain {structure['stanzas']} stanzas.
+    2. There must be {structure['lines_per_stanza']} lines per stanza.
+    3. It must have {sonic_constraint}
+    4. It must contain {end_stop_constraint}
+    5. It must contain a noun, an adjective, and a verb from the following lists for every stanza
+    6. As an added, optional challenge, it {quirk}\n
+    Nouns: {word_lists["nouns"]}
+    Adjectives: {word_lists["adjectives"]}
     Verbs: {word_lists["verbs"]}\n
+    Good luck!
     """
-    
-    if quirk != "":
-        formatted_prompt += f"\n\nAnd, as an added challenge, it {quirk}"
-        
-    formatted_prompt += "\n\nGood luck!"
     return formatted_prompt
 
 
@@ -122,7 +116,7 @@ def generate_poetry_exercise() -> str:
     structure: dict = generate_structure()
     sonic_constraint: str = generate_sonic_constraint()
     end_stop_constraint: str = generate_end_stop_constraint(structure=structure)
-    quirk = generate_quirk() if random.randint(0, 1) else ""
+    quirk = generate_quirk()
     
     prompt = format_prompt(word_lists=word_lists,
                            structure=structure,
