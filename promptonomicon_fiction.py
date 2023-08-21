@@ -44,7 +44,7 @@ def generate_constraints() -> list:
     return result
 
 
-def generate_fiction_prompt() -> str:
+def generate_fiction_exercise() -> str:
     grammar = tracery.Grammar(rules)
     grammar.add_modifiers(base_english)
     
@@ -67,7 +67,7 @@ def generate_fiction_prompt() -> str:
 
 
 def main():
-    prompt: str = generate_fiction_prompt()
+    prompt: str = generate_fiction_exercise()
     print(prompt)
 
 
