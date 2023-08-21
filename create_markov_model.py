@@ -10,32 +10,22 @@ import sys, string, json
 def import_and_clean_text(path: str) -> str:
     with open(path) as text_file:
         text = text_file.read()
-    
+        
+    text = text.replace("-", " ")
     cleaned_text = ""
     for char in text:
-        if char not in string.punctuation:
-            cleaned_text += char
+        if char in string.punctuation:
+            continue
+        if char in string.digits:
+            continue    
+        cleaned_text += char
     
     cleaned_text = cleaned_text.lower()
     cleaned_text = cleaned_text.replace("\n", " ")
+    cleaned_text = cleaned_text.encode("ascii", "ignore")
+    cleaned_text = cleaned_text.decode()
     
     return cleaned_text
-
-
-def optimize_model(model: dict) -> dict:
-    optimized_model = {}
-    for node in model.keys():
-        word_list = []
-        for word in model[node]:
-            if word not in word_list:
-                word_list.append(word)
-        counts_list = [model[node].count(word) for word in word_list]
-        optimized_model[node] = {
-            "words": word_list,
-            "counts": counts_list
-        }
-    
-    return optimized_model
 
 
 def create_markov_model(text: str) -> dict:
