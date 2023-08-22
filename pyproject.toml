@@ -10,6 +10,7 @@ python = "^3.10"
 CairoSVG = "^2.7.1"
 spacy = "^3.6.1"
 tracery = "^0.1.1"
+wikipedia-api = "^0.6.0"
 
 
 [build-system]

@@ -1248,7 +1248,21 @@ files = [
     {file = "webencodings-0.5.1.tar.gz", hash = "sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"},
 ]
 
+[[package]]
+name = "wikipedia-api"
+version = "0.6.0"
+description = "Python Wrapper for Wikipedia"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Wikipedia-API-0.6.0.tar.gz", hash = "sha256:61e94921cca9ec68e92aa5f258261d6a88b7baa960f9acfcb0c9c2c525dcb3ff"},
+    {file = "Wikipedia_API-0.6.0-py3-none-any.whl", hash = "sha256:6dfd6b3b680e342a3843fe954049c5784c1a67fadc0060f9d1696d1d0e41ecfb"},
+]
+
+[package.dependencies]
+requests = "*"
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "cf70ac9a6bc6e0a3f9aa5c6072ed8fa4f021bc77affdd4da1a0ddc723d7a8c3c"
+content-hash = "0e18585a94805c6d60e6ea7ac984ab7f2a1c3ae208f5dc0ca1fe1bd5e9c0f84e"
