@@ -947,6 +947,32 @@ def avoid_cliches(text: str) -> str:
     return result
 
 
+def avoid_obscure_punctuation(text: str) -> str:
+    passed: bool = True
+    num_used: int = 0
+    where_used: list = []
+    
+    punctuation_to_avoid = [":", ";", "(", ")", "[", "]", "{", "}", "\\", "<", ">", "--", "---"]
+    text = text.replace("\n", " ")
+    # split into sentences and loop over them
+    sentences = re.split(r"[\.\?\!]", text)
+    for index, sentence in enumerate(sentences):
+        for p in punctuation_to_avoid:
+            if p in sentence:
+                num_used += 1
+                where_used.append(f"SENTENCE {index + 1}: " + sentence.replace(p, f"**{p}**"))
+                passed = False
+    
+    result = ""
+    if passed:
+        result = f"The Obscure Punctuation Test passed!"
+    else: 
+        result = f"Avoid obscure punctuation like the following:\n    - " + "\n    - ".join(where_used)
+    
+    # print(result)
+    return result
+
+
 def test_text(text: str) -> str:
     if text == "":
         return """
@@ -961,6 +987,7 @@ def test_text(text: str) -> str:
     test5: str = sentence_variability(text)
     test6: str = avoid_clarifying_words(text)
     test7: str = avoid_cliches(text)
+    test8: str = avoid_obscure_punctuation(text)
     result = f"""
     1. {test1}\n
     2. {test2}\n
@@ -969,6 +996,7 @@ def test_text(text: str) -> str:
     5. {test5}\n
     6. {test6}\n
     7. {test7}\n
+    8. {test8}\n
     """
     return result
 
