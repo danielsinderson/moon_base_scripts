@@ -14,6 +14,8 @@ tests:
 4) Max sentence length 17 words
 5) Each sentence should be four, or more, words longer or shorter than the sentence prior 
 6) Avoid clarifying words [while, meanwhile, during, so, because, thus, causing, yet, but]
+7) Avoid cliches
+8) Avoid obscure punctuation
 """
 
 import re
